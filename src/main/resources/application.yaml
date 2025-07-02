@@ -16,3 +16,21 @@ server:
   servlet:
     context-path: /mealmemory
   port: 7045
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,loggers,metrics,beans,mappings,threaddump,heapdump,prometheus,swagger-ui,sbom
+    jmx:
+      exposure:
+        include: info,health,loggers,metrics,beans,mappings,threaddump,heapdump,prometheus,swagger-ui,sbom
+  health:
+    defaults:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  info:
+    git:
+      mode: full
