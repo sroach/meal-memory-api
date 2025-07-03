@@ -2,6 +2,7 @@ package gy.roach.health.mealmemoryapi.service
 
 import gy.roach.health.mealmemoryapi.model.Meal
 import gy.roach.health.mealmemoryapi.repository.MealRepository
+import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -20,13 +21,15 @@ class MealService(private val mealRepository: MealRepository) {
     @Value("\${app.upload.dir:#{systemProperties['user.home']}/meal-memory/uploads}")
     private lateinit var uploadDir: String
 
-    init {
+    @PostConstruct
+    fun initializeUploadDirectory() {
         // Create upload directory if it doesn't exist
         val uploadPath = Paths.get(uploadDir).toAbsolutePath()
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath)
         }
     }
+
 
     fun saveMeal(
         image: MultipartFile,
