@@ -55,6 +55,9 @@ class MealService(private val mealRepository: MealRepository) {
         val fileName = generateUniqueFileName(image.originalFilename)
         val filePath = Paths.get(uploadDir, fileName)
 
+        // Create directories if they don't exist
+        Files.createDirectories(filePath.parent)
+
         image.transferTo(filePath.toFile())
 
         return filePath.toString()
