@@ -43,7 +43,7 @@ class MealMemoryController(private val mealService: MealService) {
         }
 
         return try {
-            val savedMeal = mealService.saveMeal(imageFile, timestamp, userId, updatedMetadata)
+            val savedMeal = mealService.saveMeal(image, timestamp, userId, updatedMetadata)
 
             val response = mapOf<String, Any>(
                 "message" to "Meal uploaded successfully",
