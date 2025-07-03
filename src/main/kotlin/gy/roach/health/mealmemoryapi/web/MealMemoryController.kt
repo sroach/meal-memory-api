@@ -57,6 +57,7 @@ class MealMemoryController(private val mealService: MealService) {
 
             ResponseEntity.ok(response)
         } catch (e: Exception) {
+            e.printStackTrace()
             ResponseEntity.internalServerError().body(
                 mapOf<String, Any>("error" to "Failed to save meal: ${e.message}")
             )
