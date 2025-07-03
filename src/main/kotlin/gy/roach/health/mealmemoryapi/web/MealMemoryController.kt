@@ -15,6 +15,7 @@ class MealMemoryController(private val mealService: MealService) {
         @RequestParam("image") image: MultipartFile,
         @RequestParam("timestamp", required = false) timestamp: String?,
         @RequestParam("userId", required = false) userId: String?,
+        @RequestParam("feeling", required = false) feeling: String?,
         @RequestParam("metadata", required = false) metadata: String?
     ): ResponseEntity<Map<String, Any>> {
 
@@ -25,8 +26,24 @@ class MealMemoryController(private val mealService: MealService) {
             )
         }
 
+        // Combine feeling with metadata if provided
+        val updatedMetadata = if (feeling != null) {
+            val metadataMap = metadata?.let { 
+                try { 
+                    mapOf<String, Any>("originalMetadata" to it) 
+                } catch (e: Exception) { 
+                    emptyMap<String, Any>() 
+                }
+            } ?: emptyMap()
+
+            val combinedMap = metadataMap + mapOf("feeling" to feeling)
+            combinedMap.toString()
+        } else {
+            metadata
+        }
+
         return try {
-            val savedMeal = mealService.saveMeal(image, timestamp, userId, metadata)
+            val savedMeal = mealService.saveMeal(imageFile, timestamp, userId, updatedMetadata)
 
             val response = mapOf<String, Any>(
                 "message" to "Meal uploaded successfully",
